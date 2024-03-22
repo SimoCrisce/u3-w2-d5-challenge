@@ -9,10 +9,9 @@ import Container from "react-bootstrap/Container";
 function App() {
   return (
     <Container fluid>
-      <Row className="vh-100 d-flex justify-content-between">
+      <Row className="vh-100 d-flex justify-content-evenly">
         <LeftSidebar />
         <Weather />
-        <RightSidebar />
       </Row>
     </Container>
   );

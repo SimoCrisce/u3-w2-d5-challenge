@@ -5,25 +5,27 @@ import InputGroup from "react-bootstrap/InputGroup";
 import {
   ThermometerHalf,
   Wind,
-  DropletFill,
   BrightnessHigh,
   Water,
+  CloudFill,
   Thermometer,
   ThermometerHigh,
+  Search,
 } from "react-bootstrap-icons";
 import "../App.css";
 import Container from "react-bootstrap/Container";
 import { useEffect, useState } from "react";
+import Button from "react-bootstrap/Button";
 
 const Weather = function () {
   const convertToCelsius = function (kelvin) {
     return Math.round(kelvin - 273.15);
   };
   const [weather, setWeather] = useState(null);
-  const [searchField, setSearchField] = useState("");
+  const [searchField, setSearchField] = useState("Palermo");
 
   const fetchWeather = function () {
-    fetch("https://api.openweathermap.org/data/2.5/weather?q=ragusa&APPID=257078ff8fb80d350bc0a029f39c7d1d")
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchField}&APPID=257078ff8fb80d350bc0a029f39c7d1d`)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -40,20 +42,23 @@ const Weather = function () {
   useEffect(fetchWeather, []);
 
   return (
-    <>
+    <Col xs={9} className="bg-dark text-white-50">
+      <InputGroup className="mb-3 mt-5">
+        <Form.Control
+          id="input"
+          type="search"
+          placeholder="Cerca una città"
+          aria-label="Search"
+          value={searchField}
+          onChange={(e) => setSearchField(e.target.value)}
+          className="border-0"
+        />
+        <Button variant="secondary" onClick={fetchWeather}>
+          <Search className="d-block" />
+        </Button>
+      </InputGroup>
       {weather && (
-        <Col xs={6} className="bg-dark text-white-50">
-          <InputGroup className="mb-3 mt-5">
-            <Form.Control
-              id="input"
-              type="search"
-              placeholder="Cerca una città"
-              aria-label="Search"
-              value={searchField}
-              onChange={(e) => setSearchField(e.target.value)}
-              className="border-0"
-            />
-          </InputGroup>
+        <>
           <Container className="text-white p-4 d-flex justify-content-between align-items-center">
             <div>
               <h3 className="my-3">{weather.name}</h3>
@@ -63,6 +68,7 @@ const Weather = function () {
               <BrightnessHigh id="sun-icon" className="text-warning " />
             </div>
           </Container>
+
           <Row className="pt-3 text-white">
             <Col xs={6}>
               <h4>Longitudine: {weather.coord.lon}°</h4>
@@ -99,11 +105,11 @@ const Weather = function () {
               <Col xs={6}>
                 <div className="d-flex gap-1">
                   <div>
-                    <DropletFill />
+                    <CloudFill />
                   </div>
                   <div className="d-flex flex-column">
-                    <p className="m-0">Probabilità di pioggia</p>
-                    <h3>30</h3>
+                    <p className="m-0">Cielo</p>
+                    <h3>{weather.weather[0].main}</h3>
                   </div>
                 </div>
               </Col>
@@ -142,9 +148,9 @@ const Weather = function () {
               </Col>
             </Row>
           </section>
-        </Col>
+        </>
       )}
-    </>
+    </Col>
   );
 };
 
