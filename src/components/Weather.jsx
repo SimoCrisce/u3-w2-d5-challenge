@@ -24,6 +24,11 @@ const Weather = function () {
   const [weather, setWeather] = useState(null);
   const [searchField, setSearchField] = useState("Palermo");
 
+  const handleSearch = () => {
+    fetchWeather();
+    setSearchField("");
+  };
+
   const fetchWeather = function () {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchField}&APPID=257078ff8fb80d350bc0a029f39c7d1d`)
       .then((response) => {
@@ -50,10 +55,18 @@ const Weather = function () {
           placeholder="Cerca una città"
           aria-label="Search"
           value={searchField}
-          onChange={(e) => setSearchField(e.target.value)}
+          onChange={(e) => {
+            setSearchField(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              fetchWeather();
+              setSearchField("");
+            }
+          }}
           className="border-0"
         />
-        <Button variant="secondary" onClick={fetchWeather}>
+        <Button variant="secondary" onClick={handleSearch}>
           <Search className="d-block" />
         </Button>
       </InputGroup>
