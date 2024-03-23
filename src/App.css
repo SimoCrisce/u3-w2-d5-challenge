@@ -10,7 +10,6 @@ body {
 #input::placeholder {
   color: white;
 }
-
-#sun-icon {
+.icon {
   font-size: 100px;
 }

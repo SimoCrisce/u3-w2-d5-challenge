@@ -47,7 +47,7 @@ const Weather = function () {
   useEffect(fetchWeather, []);
 
   return (
-    <Col xs={9} className="bg-dark text-white-50">
+    <Col xs={12} sm={9} className="bg-dark text-white-50">
       <InputGroup className="mb-3 mt-5">
         <Form.Control
           id="input"
@@ -78,10 +78,13 @@ const Weather = function () {
               <h2>{convertToCelsius(weather.main.temp)}°</h2>
             </div>
             <div>
-              <BrightnessHigh id="sun-icon" className="text-warning " />
+              {weather.weather[0].main === "Clear" ? (
+                <BrightnessHigh className="text-warning icon" />
+              ) : (
+                <CloudFill className="text-secondary icon" />
+              )}
             </div>
           </Container>
-
           <Row className="pt-3 text-white">
             <Col xs={6}>
               <h4>Longitudine: {weather.coord.lon}°</h4>
